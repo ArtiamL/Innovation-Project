@@ -39,7 +39,7 @@ class Menu(QWidget):
         self.bottom_left_button.setFixedSize(button_size, button_size)
         self.bottom_left_button.setStyleSheet("background-color: #E9EF8B; color: white; font-family: Harlow; font-size: 25pt;")
 
-        self.bottom_right_button = QPushButton("Settings", self)
+        self.bottom_right_button = QPushButton("Restart", self)
         self.bottom_right_button.setFixedSize(button_size, button_size)
         self.bottom_right_button.setStyleSheet("background-color: #04EC1B; color: black; font-family: Harlow; font-size: 25pt;")
 

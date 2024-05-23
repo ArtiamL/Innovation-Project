@@ -35,6 +35,7 @@ class MainWindow(QMainWindow):
         self.menu = Menu()
         self.menu.top_left_button.clicked.connect(self.show_camera)
         self.menu.top_right_button.clicked.connect(self.show_collection)
+        self.menu.bottom_right_button.clicked.connect(self.restart)
 
         self.camera = Camera(self.data)
         self.camera.button.clicked.connect(self.show_collection)
@@ -67,6 +68,12 @@ class MainWindow(QMainWindow):
     def show_collection(self):
         self.stacked.setCurrentIndex(3)
         self.setObjectName("bgMenu")
+        self.style().unpolish(self)
+        self.style().polish(self)
+
+    def restart(self):
+        self.stacked.setCurrentIndex(0)
+        self.setObjectName("bgLaunch")
         self.style().unpolish(self)
         self.style().polish(self)
 
