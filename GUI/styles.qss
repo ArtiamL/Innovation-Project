@@ -1,0 +1,27 @@
+#bgLaunch {
+    border-image: url(Background_image.jpg) 0 0 0 0 stretch stretch;
+}
+
+#bgMenu {
+    border-image: url(second_page.jpg) 0 0 0 0 stretch stretch;
+
+}
+
+QLabel {
+    color: #3F0D12;
+    font-family: Harlow;
+    font-size: 45pt;
+}
+
+QPushButton {
+    border: 0;
+    border-radius: 15px;
+    background: white;
+
+    font-size: 20pt;
+}
+
+#start {
+    background-color: #3F0D12;
+    color: white;
+}
