@@ -1,6 +1,7 @@
 import sys
 import signal
 from pathlib import Path
+import json
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication, QMainWindow, QStackedLayout, QLabel, QWidget
@@ -12,8 +13,15 @@ from camera import Camera
 from collection import Collection
 
 class MainWindow(QMainWindow):
+    data = {}
+
     def __init__(self):
         super().__init__()
+
+        with open("../collection/data/animals.json", "r") as f:
+            self.data = json.load(f)
+
+        # print(self.data)
 
         self.setObjectName("bgLaunch")
 
@@ -28,10 +36,11 @@ class MainWindow(QMainWindow):
         self.menu.top_left_button.clicked.connect(self.show_camera)
         self.menu.top_right_button.clicked.connect(self.show_collection)
 
-        self.camera = Camera()
+        self.camera = Camera(self.data)
         self.camera.button.clicked.connect(self.show_collection)
 
-        self.collection = Collection()
+        self.collection = Collection(self.data)
+        self.collection.menu.clicked.connect(self.show_menu)
 
         self.stacked.addWidget(self.launch)
         self.stacked.addWidget(self.menu)

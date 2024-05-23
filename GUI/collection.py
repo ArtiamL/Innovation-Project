@@ -8,11 +8,10 @@ from PyQt5 import QtCore
 class Collection(QWidget):
     data = {}
 
-    def __init__(self):
+    def __init__(self, data = {}):
         super().__init__()
 
-        with open("../collection/data/animals.json", "r") as f:
-            self.data = json.load(f)
+        self.data = data
 
         self.layout = QGridLayout()
         
@@ -26,7 +25,7 @@ class Collection(QWidget):
             "great_white_shark": QPushButton('', self),
             "starfish": QPushButton('', self),
             "stingray": QPushButton('', self),
-            "turtle": QPushButton('', self)
+            "leatherback_turtle": QPushButton('', self)
         }
 
         for animal in self.data:
@@ -46,8 +45,17 @@ class Collection(QWidget):
 
         for i, (_, v) in enumerate(bottom_row.items()):
             self.layout.addWidget(v, 1, i)
+
+        self.menu = QPushButton("Menu", self)
+        self.menu.resize(100, 100)
+        self.menu.setObjectName("start")
+        self.layout.addWidget(self.menu, 2, 2)
      
         self.setLayout(self.layout)
+
+    def set_collected(self, animal):
+        if self.data is not None:
+            self.data[animal][0].update({"collected": "true"})
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

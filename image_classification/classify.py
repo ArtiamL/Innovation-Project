@@ -18,7 +18,7 @@ from tflite_support.task import core, processor, vision
 
 class Thread(QThread):
     changePixmap = pyqtSignal(QImage)
-    collected = pyqtSignal(bool, name='collected')
+    collected = pyqtSignal(str, name='collected')
 
     def run(self, model: str, max_results: int, score_threshold: float, num_threads: int,
         enable_edgetpu: bool, camera_id: int, width: int, height: int):
@@ -30,7 +30,7 @@ class Thread(QThread):
         with open("../image_classification/labels.txt", "r") as f:
             allow_list = f.read().splitlines()
 
-        print(allow_list)
+        # print(allow_list)
 
         base_options = core.BaseOptions(file_name=model, use_coral=enable_edgetpu, num_threads=num_threads)
 
@@ -75,20 +75,26 @@ class Thread(QThread):
 
                 categories = classifier.classify(tensor_img)
 
+                name = None
+
+                Thread.sleep(1)
+                
                 if categories is not None:
-                    name = None
 
                     for cat in categories.classifications[0].categories:
                         name = cat.category_name
                         print(f"Category: {cat.category_name}, Score: {str(round(cat.score, 2))}")
 
-                    cv2.imwrite(f"../collection/images/collected/{name.replace(' ', '_')}.png", rgb_img)
+                
+                if name is not None:
+                    name = name.replace(' ', '_').lower()
+                    cv2.imwrite(f"../collection/images/collected/{name}.png", rgb_img)
 
-                self.collected.emit(True)
+                    self.collected.emit(name)
 
-                Thread.sleep(1)
-                cap.release()
-                break
+                    cap.release()
+                    break
+                    
 
             if cv2.waitKey(1) == 27:
                 break

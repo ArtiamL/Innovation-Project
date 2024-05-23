@@ -5,13 +5,20 @@ from PyQt5.QtGui import QImage, QPixmap
 from PyQt5 import QtCore
 
 from image_classification.classify import Thread
+from collection import Collection
+import json
 # import image_classification.classify as classify
 
 class Camera(QWidget):
     thread = None
+    data = ""
 
-    def __init__(self):
+    def __init__(self, data):
         super().__init__()
+
+        self.data = data
+
+        # print(self.data)
         
         self.label = QLabel(self)
         self.label.resize(640, 480)
@@ -41,9 +48,9 @@ class Camera(QWidget):
     def setImage(self, image):
         self.label.setPixmap(QPixmap.fromImage(image))
 
-    @QtCore.pyqtSlot(bool, name='collected')
-    def show_collected(self, collected):
-        print(f"Collected: {collected}")
+    @QtCore.pyqtSlot(str, name='collected')
+    def show_collected(self, animal):
+        print(f"Collected: {animal}")
         self.thread.stop()
         self.label.clear()
         self.label.setText("Collected!")
@@ -51,6 +58,16 @@ class Camera(QWidget):
         self.layout.addSpacing(75)
         self.layout.addWidget(self.button, 0, QtCore.Qt.AlignHCenter)
         self.layout.addSpacing(20)
+
+
+        print(self.data[animal][0])
+        self.data[animal][0]["collected"] = "true"
+
+        with open("../collection/data/animals.json", "w") as f:
+            json.dump(self.data, f)
+
+        # self.update()
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
